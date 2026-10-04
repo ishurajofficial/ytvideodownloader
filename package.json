@@ -1,0 +1,50 @@
+{
+  "name": "ytdesk",
+  "version": "1.0.0",
+  "description": "A focused desktop media downloader for content you have permission to save",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "test": "node --test test/*.test.js",
+    "build": "electron-builder",
+    "dist": "electron-builder --publish=never"
+  },
+  "keywords": [
+    "youtube",
+    "downloader",
+    "video",
+    "mp3",
+    "mp4"
+  ],
+  "author": "YtDesk",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^44.5.1",
+    "electron-builder": "^26.15.3"
+  },
+  "dependencies": {
+    "ffmpeg-static": "^5.2.0",
+    "fs-extra": "^11.1.1",
+    "youtube-dl-exec": "^3.1.17"
+  },
+  "build": {
+    "appId": "com.ytdesk.app",
+    "productName": "YtDesk",
+    "directories": {
+      "output": "dist"
+    },
+    "files": ["**/*", "!node_modules/.cache/**/*", "!**/*.map", "!test/**/*"],
+    "asar": true,
+    "asarUnpack": ["node_modules/youtube-dl-exec/bin/**/*", "node_modules/ffmpeg-static/**/*"],
+    "mac": {
+      "category": "public.app-category.utilities"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
+  }
+}

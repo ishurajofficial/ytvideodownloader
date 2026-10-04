@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: https://i.ytimg.com https://*.googleusercontent.com https://*.ytimg.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; font-src 'self' https://cdnjs.cloudflare.com; script-src 'self'; connect-src 'self' https://*.googlevideo.com https://www.youtube.com https://*.ytimg.com">
+    <title>YtDesk</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fab fa-youtube"></i>
+                    <h1>YtDesk</h1>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-secondary" id="settingsBtn"><i class="fas fa-sliders-h"></i> Settings &amp; About</button>
+                    <button class="btn btn-secondary" id="selectFolderBtn">
+                        <i class="fas fa-folder-open"></i>
+                        Select Folder
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- URL Input Section -->
+            <section class="url-section">
+                <div class="input-group">
+                    <div class="input-wrapper">
+                        <i class="fas fa-link input-icon"></i>
+                        <input 
+                            type="url" 
+                            id="urlInput" 
+                            placeholder="Paste YouTube video URL here..."
+                            class="url-input"
+                        >
+                        <button class="btn btn-primary" id="analyzeBtn">
+                            <i class="fas fa-search"></i>
+                            Analyze
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Video Info Section -->
+            <section class="video-info-section" id="videoInfoSection" style="display: none;">
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <img id="videoThumbnail" src="" alt="Video thumbnail">
+                        <div class="video-duration" id="videoDuration"></div>
+                    </div>
+                    <div class="video-details">
+                        <h3 id="videoTitle"></h3>
+                        <div class="video-meta">
+                            <span class="meta-item">
+                                <i class="fas fa-clock"></i>
+                                <span id="videoLength"></span>
+                            </span>
+                            <span class="meta-item" id="channelName"></span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Download Options Section -->
+            <section class="download-options" id="downloadOptions" style="display: none;">
+                <div class="options-header">
+                    <h3>Download Options</h3>
+                </div>
+                
+                <div class="format-selection">
+                    <div class="format-tabs">
+                        <button class="format-tab active" data-format="mp4">
+                            <i class="fas fa-video"></i>
+                            MP4 Video
+                        </button>
+                        <button class="format-tab" data-format="mp3">
+                            <i class="fas fa-music"></i>
+                            MP3 Audio
+                        </button>
+                    </div>
+
+                    <div class="quality-selection" id="qualitySelection">
+                        <label for="qualitySelect">Quality:</label>
+                        <select id="qualitySelect" class="quality-select">
+                            <option value="">Select quality...</option>
+                        </select>
+                        <div class="format-list" id="formatList" aria-label="Available download formats"></div>
+                    </div>
+                </div>
+
+                <div class="download-path">
+                    <label for="downloadPath">Download to:</label>
+                    <div class="path-input-group">
+                        <input type="text" id="downloadPath" class="path-input" readonly>
+                        <button class="btn btn-secondary" id="browseFolderBtn">
+                            <i class="fas fa-folder-open"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="download-actions">
+                    <button class="btn btn-success btn-large" id="downloadBtn" disabled>
+                        <i class="fas fa-download"></i>
+                        Download
+                    </button>
+                </div>
+            </section>
+
+            <!-- Progress Section -->
+            <section class="progress-section" id="progressSection" style="display: none;">
+                <div class="progress-card">
+                    <div class="progress-header">
+                        <h4>Downloading...</h4>
+                        <span class="progress-percentage" id="progressPercentage">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-details">
+                        <span id="progressStatus">Preparing download...</span>
+                        <span id="progressMeta">Waiting for media…</span>
+                    </div>
+                    <div class="progress-actions">
+                        <button class="btn btn-secondary" id="cancelDownloadBtn">Cancel download</button>
+                        <button class="btn btn-secondary" id="openFileBtn" hidden>Open file</button>
+                        <button class="btn btn-secondary" id="openFolderBtn" hidden>Open download folder</button>
+                        <button class="btn btn-primary" id="anotherVideoBtn" hidden>Download another video</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Download History -->
+            <section class="history-section">
+                <div class="history-header">
+                    <h3>Recent Downloads</h3>
+                    <button class="btn btn-text" id="clearHistoryBtn">Clear All</button>
+                </div>
+                <div class="history-list" id="historyList">
+                    <div class="empty-state">
+                        <i class="fas fa-history"></i>
+                        <p>No downloads yet</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Toast Notifications -->
+        <div class="toast-container" id="toastContainer"></div>
+
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+            <div class="loading-spinner">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Processing...</p>
+            </div>
+        </div>
+    </div>
+
+    <dialog class="settings-dialog" id="settingsDialog">
+        <div class="settings-content">
+            <div class="settings-header"><h2>Settings &amp; About</h2><button class="btn btn-text" id="closeSettingsBtn" aria-label="Close">✕</button></div>
+            <label for="settingsPath">Download folder</label>
+            <div class="path-input-group"><input id="settingsPath" class="path-input" type="text"><button class="btn btn-secondary" id="browseFolderBtn" aria-label="Choose folder"><i class="fas fa-folder-open"></i></button></div>
+            <label class="metadata-toggle"><input id="metadataToggle" type="checkbox"> Embed title and channel metadata</label>
+            <button class="btn btn-primary" id="saveSettingsBtn">Save settings</button>
+            <hr><h3>About YtDesk</h3>
+            <p>YtDesk uses yt-dlp and FFmpeg to inspect and process media on your device.</p>
+            <p id="legalNotice"></p>
+        </div>
+    </dialog>
+
+    <script src="renderer.js"></script>
+</body>
+</html>
