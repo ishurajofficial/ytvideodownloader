@@ -5,9 +5,9 @@ const fs = require('fs-extra');
 const path = require('path');
 const crypto = require('crypto');
 const { constants } = require('youtube-dl-exec');
-const ffmpegPath = require('ffmpeg-static');
 const { normalizeYouTubeUrl } = require('./validator');
 const { ytDlpEnvironment } = require('./environment');
+const { getFfmpegPath } = require('./media-tools');
 
 function safeTitle(value) {
   let name = String(value || 'YouTube video').normalize('NFC')
@@ -54,11 +54,8 @@ class DownloadManager {
 
     const jobId = crypto.randomUUID();
     const env = ytDlpEnvironment();
-    let resolvedFfmpeg = ffmpegPath;
-    if (resolvedFfmpeg && process.versions.electron) {
-      const { app } = require('electron');
-      if (app.isPackaged) resolvedFfmpeg = resolvedFfmpeg.replace(`${path.sep}app.asar${path.sep}`, `${path.sep}app.asar.unpacked${path.sep}`);
-    }
+    const isPackaged = process.versions.electron ? require('electron').app.isPackaged : false;
+    const resolvedFfmpeg = getFfmpegPath(env, isPackaged);
     if (resolvedFfmpeg) {
       env.PATH = `${path.dirname(resolvedFfmpeg)}${path.delimiter}${env.PATH || ''}`;
       args.splice(args.indexOf('--no-warnings'), 0, '--ffmpeg-location', path.dirname(resolvedFfmpeg));

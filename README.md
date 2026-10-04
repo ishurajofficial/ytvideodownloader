@@ -46,6 +46,7 @@ Settings, up to 200 download-history entries, and a rotating diagnostic log are 
 ## Troubleshooting
 
 - **Analysis errors:** update dependencies (`npm update youtube-dl-exec`) and retry. Some videos are unavailable by region or publisher settings.
+- **Media processing errors:** from the project folder run `npm run repair:ffmpeg`, then restart YtDesk. Installation checks that the FFmpeg binary can run and repairs an incomplete download; if a system FFmpeg is installed, YtDesk can use it as a fallback.
 - **Python error:** confirm `python3 --version` works and meets the requirement above.
 - **Certificate error:** install/configure a trusted CA bundle for the system Python environment. YtDesk keeps TLS verification enabled.
 - **Post-processing error:** reinstall app dependencies so the bundled FFmpeg binary is present.
