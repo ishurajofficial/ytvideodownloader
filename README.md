@@ -30,6 +30,10 @@ npm run build
 
 `npm run build` creates a package for the current platform in `dist/`. Use `npm run dist` for the same non-publishing build. Build and sign each release on its target OS and architecture; the yt-dlp and FFmpeg executables are platform-specific. Electron Builder unpacks both executable dependencies from the app archive so they can run. macOS distribution may require Developer ID signing and notarization; Windows installer signing is recommended for published releases.
 
+## Android app
+
+The native Android companion is maintained in the [YtDesk Android repository](https://github.com/ishurajofficial/ytdesk-android). It supports Android 10 and newer and includes its own build, signing, and third-party license instructions.
+
 ## Use
 
 1. Paste a `youtube.com/watch`, `youtu.be`, Shorts, embed, or live video URL and press **Analyze**.
